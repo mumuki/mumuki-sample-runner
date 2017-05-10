@@ -1,6 +1,6 @@
 require 'mumukit'
 
-Mumukit.runner_name = <RUNNER>
+Mumukit.runner_name = '<RUNNER>'
 Mumukit.configure do |config|
   config.docker_image = 'mumuki/mumuki-<RUNNER>-worker'
 end
