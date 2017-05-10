@@ -1,4 +1,4 @@
-FROM <DOCKER_BASE>
+FROM <IMAGE>
 MAINTAINER <AUTHOR>
 
 # Declare your dockerfile here

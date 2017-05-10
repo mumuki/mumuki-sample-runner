@@ -35,7 +35,7 @@ fi
 user=$1
 runner=$2
 constant=$3
-docker_base=$4
+image=$4
 
 author=$user
 year=$(date +%Y)
@@ -56,31 +56,48 @@ if [ -d $project_directory ]; then
   exit 2
 fi
 
-cp template $project_directory
+cp template $project_directory -R
 cd $project_directory
 
-sed -i "s/<RUNNER>/$(runner)/g"                    mumuki-sample-runer.gemspec
-sed -i "s/<CONSTANT>/$(constant)/g"                mumuki-sample-runer.gemspec
-mv  mumuki-sample-runer.gemspec                    mumuki-$(runner)-runner.gemspec
 
-sed -i "s/<RUNNER>/$(runner)/g"                    config.ru
-sed -i "s/<RUNNER>/$(runner)/g"                    README.md
-sed -i "s/<YEAR>/$(year)/g"                        LICENSE
-sed -i "s/<AUTHOR>/$(author)/g"                    LICENSE
-sed -i "s/<RUNNER>/$(runner)/g"                    .travis.yml
+echo "[Mumukit::Bootstrap] Creating gemspec..."
+sed -i "s/<RUNNER>/$runner/g"                    mumuki-sample-runner.gemspec
+sed -i "s/<CONSTANT>/$constant/g"                mumuki-sample-runner.gemspec
+mv  mumuki-sample-runner.gemspec                 mumuki-$runner-runner.gemspec
 
-sed -i "s/<AUTHOR>/$(author)/g"                    worker/Dockerfile
-sed -i "s/<DOCKER_BASE>/$(docker_base)/g"          worker/Dockerfile
+echo "[Mumukit::Bootstrap] Creating LICENSE..."
+sed -i "s/<YEAR>/$year/g"                        LICENSE
+sed -i "s/<AUTHOR>/$author/g"                    LICENSE
 
-sed -i "s/<RUNNER>/$(runner)/g"                    spec/spec_helper.rb
+echo "[Mumukit::Bootstrap] Creating config.ru..."
+sed -i "s/<RUNNER>/$runner/g"                    config.ru
 
-sed -i "s/<RUNNER>/$(runner)/g"                    lib/sample_runner.rb
-mv lib/sample_runner.rb                            lib/$(runner)_runner.rb
+echo "[Mumukit::Bootstrap] Creating README.md..."
+sed -i "s/<RUNNER>/$runner/g"                    README.md
 
+echo "[Mumukit::Bootstrap] Creating .travis.yml..."
+sed -i "s/<RUNNER>/$runner/g"                    .travis.yml
 
-sed -i "s/<RUNNER>/$(runner)/g"                    lib/metadata_hook.rb
-sed -i "s/<RUNNER>/$(runner)/g"                    lib/test_hook.rb
-sed -i "s/<RUNNER>/$(runner)/g"                    lib/version_hook.rb
+echo "[Mumukit::Bootstrap] Creating spec/spec_helper.rb..."
+sed -i "s/<RUNNER>/$runner/g"                    spec/spec_helper.rb
+
+echo "[Mumukit::Bootstrap] Creating lib/${runner}_runner.rb..."
+sed -i "s/<RUNNER>/$runner/g"                    lib/sample_runner.rb
+mv lib/sample_runner.rb                          lib/${runner}_runner.rb
+
+echo "[Mumukit::Bootstrap] Creating worker/Dockerfile..."
+sed -i "s/<AUTHOR>/$author/g"                    worker/Dockerfile
+echo "s/<IMAGE>/$image/g"
+sed -i "s/<IMAGE>/$image/g"                      worker/Dockerfile
+
+echo "[Mumukit::Bootstrap] Creating lib/metadata_hook.rb..."
+sed -i "s/<RUNNER>/$runner/g"                    lib/metadata_hook.rb
+
+echo "[Mumukit::Bootstrap] Creating lib/test_hook.rb..."
+sed -i "s/<RUNNER>/$runner/g"                    lib/test_hook.rb
+
+echo "[Mumukit::Bootstrap] Creating lib/version_hook.rb..."
+sed -i "s/<RUNNER>/$runner/g"                    lib/version_hook.rb
 
 git init .
 git add -A
