@@ -76,6 +76,7 @@ sed -i "s/<RUNNER>/$runner/g"                    config.ru
 
 echo "[Mumukit::Bootstrap] Creating README.md..."
 sed -i "s/<RUNNER>/$runner/g"                    README.md
+sed -i "s/<USER>/$user/g"                        README.md
 
 echo "[Mumukit::Bootstrap] Creating .travis.yml..."
 sed -i "s/<RUNNER>/$runner/g"                    .travis.yml

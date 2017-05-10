@@ -61,12 +61,18 @@ $ docker run hello-world
 Pull docker container
 
 ```bash
-$ docker pull leandrojdl/mumuki-<RUNNER>-worker
+$ docker pull <USER>/mumuki-<RUNNER>-worker
 ```
 
-#### Run Tests
+### Run Tests
 
 ```bash
 $ bundle exec rspec
+```
+
+### Start the server
+
+```bash
+$ bundle exec rackup
 ```
 
