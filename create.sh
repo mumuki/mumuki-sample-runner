@@ -63,6 +63,8 @@ cd $project_directory
 echo "[Mumukit::Bootstrap] Creating gemspec..."
 sed -i "s/<RUNNER>/$runner/g"                    mumuki-sample-runner.gemspec
 sed -i "s/<CONSTANT>/$constant/g"                mumuki-sample-runner.gemspec
+sed -i "s/<USER>/$user/g"                        mumuki-sample-runner.gemspec
+sed -i "s/<AUTHOR>/$author/g"                    mumuki-sample-runner.gemspec
 mv  mumuki-sample-runner.gemspec                 mumuki-$runner-runner.gemspec
 
 echo "[Mumukit::Bootstrap] Creating LICENSE..."
@@ -87,8 +89,7 @@ mv lib/sample_runner.rb                          lib/${runner}_runner.rb
 
 echo "[Mumukit::Bootstrap] Creating worker/Dockerfile..."
 sed -i "s/<AUTHOR>/$author/g"                    worker/Dockerfile
-echo "s/<IMAGE>/$image/g"
-sed -i "s/<IMAGE>/$image/g"                      worker/Dockerfile
+sed -i "s,<IMAGE>,$image,g"                      worker/Dockerfile
 
 echo "[Mumukit::Bootstrap] Creating lib/metadata_hook.rb..."
 sed -i "s/<RUNNER>/$runner/g"                    lib/metadata_hook.rb
