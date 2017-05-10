@@ -92,14 +92,18 @@ sed -i "s/<AUTHOR>/$author/g"                    worker/Dockerfile
 sed -i "s,<IMAGE>,$image,g"                      worker/Dockerfile
 
 echo "[Mumukit::Bootstrap] Creating lib/metadata_hook.rb..."
-sed -i "s/<RUNNER>/$runner/g"                    lib/metadata_hook.rb
+sed -i "s/<CONSTANT>/$constant/g"                lib/metadata_hook.rb
 
 echo "[Mumukit::Bootstrap] Creating lib/test_hook.rb..."
-sed -i "s/<RUNNER>/$runner/g"                    lib/test_hook.rb
+sed -i "s/<CONSTANT>/$constant/g"                lib/test_hook.rb
 
 echo "[Mumukit::Bootstrap] Creating lib/version_hook.rb..."
-sed -i "s/<RUNNER>/$runner/g"                    lib/version_hook.rb
+sed -i "s/<CONSTANT>/$constant/g"                lib/version_hook.rb
 
+echo "[Mumukit::Bootstrap] Running bundle install..."
+bundle install
+
+echo "[Mumukit::Bootstrap] Initializing git repository..."
 git init .
 git add -A
 git commit -m "Inital commit"

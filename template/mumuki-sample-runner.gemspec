@@ -7,7 +7,7 @@ require 'version_hook'
 Gem::Specification.new do |spec|
   spec.name          = 'mumuki-<RUNNER>-runner'
   spec.version       = <CONSTANT>VersionHook::VERSION
-  spec.authors       = [<AUTHOR>]
+  spec.authors       = ['<AUTHOR>']
   spec.summary       = '<RUNNER> Runner for Mumuki'
   spec.homepage      = 'http://github.com/<USER>/mumuki-<RUNNER>-server'
   spec.license       = 'MIT'
