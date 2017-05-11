@@ -376,6 +376,62 @@ end
 #### Embedding execution
 #### Implementing your own test runner
 
-And what if there is nothing like a test runner in your technology? Then you have to implement it yourself :sunglasses:. 
+And what if there is nothing like a test runner in your technology? Then you have to implement it yourself :unamused:. Buuuut, there are some good news! `mumukit` provides some components to do it quicker: `Mumukit::Metatest::Framework` :sunglasses:.
 
-Buuuut, there are some good news! `mumukit` provides some components to do it quicker. 
+There are two different ways to accomplish this: 
+
+  * If you don't need Docker support - becasue you can do all the test securely and in-memory - you should drop and forget about `Mumukit::Templates::FileHook`, and implement your `test_hook` using `Mumukit::Hook` as parent class. 
+  * If you will need Docker support to run the code, you should still inherit from `Mumukit::Templates::FileHook`, as usual, and executing your assertions within `post_process_file`.
+
+##### No docker support
+
+```ruby
+class MyRunnerTestHook < Mumukit::Hook
+  def compile(request)
+    { source: request[:content].strip, examples: request[:test].map { |example| example.deep_symbolize_keys } }
+  end
+
+  def run!(test_definition)
+    metatest.test(test_definition, test_definition[:examples])
+  end
+
+  private
+
+  def metatest
+    Mumukit::Metatest::Framework.new(checker: MyChecker.new,
+                                     runner: Mumukit::Metatest::IdentityRunner.new)
+  end
+end
+```
+
+##### Docker support
+
+```ruby
+class MyRunnerTestHook < Mumukit::Templates::FileHook
+  include Mumukit::WithTempfile
+  isolated true
+
+  def tempfile_extension
+    '...'
+  end
+
+  def command_line(filename)
+    "customcommand #{filename}"
+  end
+
+  def post_process_file(_file, result, status)
+    output = parse_json result
+
+    if status == :passed
+      metatest.test output, @examples
+    else
+      super
+    end
+  end
+  
+  def metatest
+    Mumukit::Metatest::Framework.new(checker: MyChecker.new,
+                                     runner: Mumukit::Metatest::IdentityRunner.new)
+  end
+end
+```
