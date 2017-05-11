@@ -318,12 +318,64 @@ Mumukit.configure do |config|
 end
 ```
 
+#### Specifying content type
+
+By default, `mumukit` assumes that the output of your dockerized test runner command is plain text. For example, the default `rspec` output looks like the following: 
+
+```
+...
+Mumukit::Hook
+  should eq "bar"
+  should raise NoMethodError
+  should raise NoMethodError
+  should raise NoMethodError
+
+Finished in 6.78 seconds
+60 examples, 0 failures, 1 pending
+Coverage report generated for RSpec to /home/franco/tmp/mumuki/mumukit/coverage. 739 / 794 LOC (93.07%) covered.
+```
+
+Whih is undoubtfully plain text. However, there may be commands that return other formats, or you can even tweak the previously discussed `post_process_file` to transform the output. 
+
+In those cases, you can specify a different content-type for your runner output. Currently the following formats -provided by the `mumukit-content-type` gem - are supported: 
+
+* `Mumukit::ContentType::Plain`
+* `Mumukit::ContentType::Html`
+* `Mumukit::ContentType::Markdown` - with emoji support too :stuck_out_tongue:
+
+As with previous tweaks, you can declare it in your `mumukit` configuration in `<runner>_runner.rb`: 
+
+```ruby
+Mumukit.configure do |config|
+  ...
+  config.content_type = 'markdown'
+end
+```
+#### Dealing with internationalization
+
+`mumukit` already comes with support for **i18n**, thanks to the standard `i18n` gem. In any hook you can use the standard `I18n.t` method, which will use the propert locale from the request (if available).
+
+In order to add custom translations, just declare them in `/locales/` - for example `/locales/es.yml` - and then require them before doing `Mumukit.configure`. E.g.: 
+
+```ruby
+require 'mumukit'
+
+I18n.load_translations_path File.join(__dir__, 'locales', '*.yml')
+
+Mumukit.runner_name = 'prolog'
+Mumukit.configure do |config|
+   ...
+end
+```
+
 #### Structuring tests results
 #### Add Feedback
 #### Add Mulang support
 #### Changing mashup style
 #### Overriding compilation entirely
-#### Specifying content type
-#### Dealing with i18n
 #### Embedding execution
 #### Implementing your own test runner
+
+And what if there is nothing like a test runner in your technology? Then you have to implement it yourself :sunglasses:. 
+
+Buuuut, there are some good news! `mumukit` provides some components to do it quicker. 
