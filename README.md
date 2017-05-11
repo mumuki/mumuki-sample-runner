@@ -408,7 +408,6 @@ end
 
 ```ruby
 class MyRunnerTestHook < Mumukit::Templates::FileHook
-  include Mumukit::WithTempfile
   isolated true
 
   def tempfile_extension
