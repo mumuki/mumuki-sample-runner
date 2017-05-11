@@ -286,9 +286,9 @@ require_relative './validation_hook'
 
 ```json
 { 
-  'test': '/*...content...*/ baz /*...extra...*/',
-  'content': 'foo'
-  'extra': 'bar'
+  "test": "/*...content...*/ baz /*...extra...*/",
+  "content": "foo"
+  "extra": "bar"
 }
 ```
 
@@ -297,7 +297,7 @@ The runner will treat those `/*... ...*/` comments specially, and transform the 
 ```json
 { 
   "test": "foo baz bar",
-  "content": "
+  "content": ""
   "extra": ""
 }
 ```
