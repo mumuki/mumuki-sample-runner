@@ -110,5 +110,8 @@ git add -A
 git commit -m "Inital commit"
 
 echo "[Mumukit::Bootstrap] Done!"
-echo "                     Now go to $project_directory and start editing it. "
+echo "                     Now go to $project_directory and start editing it."
+echo ""
+echo "                     See htts://github.com/mumuki/mumukit-bootstrap/README.md#Development for more instructions"
+
 
