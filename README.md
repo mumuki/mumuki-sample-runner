@@ -368,7 +368,11 @@ Mumukit.configure do |config|
 end
 ```
 
-#### Structuring tests results
+#### Embedding execution
+
+There are some - rare - scenarios where you want to run your test or query command in the server environment - that is, not using docker. In those cases, simple change `isolated true` to `isolated false`. And that is all!
+
+Obviously in those cases you will not need a docker image, so you can remove the `worker` directory safely. 
 
 #### Changing mashup style
 
@@ -453,9 +457,11 @@ The only restriction is that your `customcommand` must return a Json output. If 
 
 Please notice that using `metatested true` is incompatible with `structured true` and `mashup` directives. 
 
+#### Structuring tests results
 #### Add Feedback
 #### Add Mulang support
 
-#### Embedding execution
+
+
 
 
