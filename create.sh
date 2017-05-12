@@ -111,6 +111,6 @@ git commit -m "Inital commit"
 echo "[Mumukit::Bootstrap] Done!"
 echo "                     Now go to $project_directory and start editing it."
 echo ""
-echo "                     See https://github.com/mumuki/mumukit-bootstrap/README.md#Development for more instructions"
+echo "                     See https://github.com/mumuki/mumukit-bootstrap/blob/master/README.md#developing for more instructions"
 
 
