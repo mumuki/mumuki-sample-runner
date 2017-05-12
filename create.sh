@@ -23,7 +23,6 @@ if [ $# -ne 4 ]; then
   echo "                     GITHUB_USER is the Github username of the creator;"
   echo "                     RUNNER is the runners name, in snake-case-lower-case;"
   echo "                     CONSTANT is the runners name as a Ruby constant, in CamelCaseUpperCase;"
-  echo "                     COPYRIGHT_YEAR is the Github username of the creator;"
   echo "                     DOCKER_BASE_IMAGE is the Docker base image used to run the code like foo/bar:0.2"
   echo ""
   echo ""
