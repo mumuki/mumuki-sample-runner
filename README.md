@@ -369,11 +369,52 @@ end
 ```
 
 #### Structuring tests results
-#### Add Feedback
-#### Add Mulang support
+
 #### Changing mashup style
+
+By default, the `mashup` directives compiles the `POST /test` requests into a file that simply concatenates `extra`, `content`, `test`, in that order. 
+
+However, you can alter the concatenation order by explicitly declaring it, e.g.:
+
+```ruby
+mashup :content, :extra, :test
+```
+
 #### Overriding compilation entirely
-#### Embedding execution
+
+Sometimes, the mashup directive is not enough, and you need to pass more complex code to your command. For those cases, **instead of** using `mashup`, you should implement `compile_file_content(request)`. E.g: 
+
+```ruby
+class JavaTestHook < Mumukit::Templates::FileHook
+  isolated true
+  # notice no mashup directive!
+ 
+  def compile_file_content(request)
+    <<EOF
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+import java.time.*;
+import org.junit.*;
+
+#{request.content}
+
+#{request.extra}
+
+public class SubmissionTest {
+#{request.test}
+
+public static void main(String args[]) {
+  org.junit.runner.JUnitCore.main("SubmissionTest");
+}
+}
+EOF
+  end
+end
+``` 
+
+The `compile_file_content(request)` must return a string. The `Mumukit::Templates::TestHook` will then compile it into a temporal file and pass it to your command. 
+
 #### Implementing your own test runner
 
 And what if there is nothing like a test runner in your technology? Then you have to implement it yourself :unamused:. Buuuut, there are some good news! `mumukit` provides some components to do it quicker: `Mumukit::Metatest::Framework` :sunglasses:.
@@ -383,54 +424,38 @@ There are two different ways to accomplish this:
   * If you don't need Docker support - becasue you can do all the test securely and in-memory - you should drop and forget about `Mumukit::Templates::FileHook`, and implement your `test_hook` using `Mumukit::Hook` as parent class. 
   * If you will need Docker support to run the code, you should still inherit from `Mumukit::Templates::FileHook`, as usual, and executing your assertions within `post_process_file`.
 
-##### No docker support
-
-```ruby
-class MyRunnerTestHook < Mumukit::Hook
-  def compile(request)
-    { source: request[:content].strip, examples: request[:test].map { |example| example.deep_symbolize_keys } }
-  end
-
-  def run!(test_definition)
-    metatest.test(test_definition, test_definition[:examples])
-  end
-
-  private
-
-  def metatest
-    Mumukit::Metatest::Framework.new(checker: MyChecker.new,
-                                     runner: Mumukit::Metatest::IdentityRunner.new)
-  end
-end
-```
-
-##### Docker support
+Since the latter scenario is the most common, we already provide a specific directive `metatested true`:
 
 ```ruby
 class MyRunnerTestHook < Mumukit::Templates::FileHook
   isolated true
+  metatested true
 
   def tempfile_extension
     '...'
   end
 
   def command_line(filename)
-    "customcommand #{filename}"
+      "customcommand #{filename}"
   end
 
-  def post_process_file(_file, result, status)
-    output = parse_json result
-
-    if status == :passed
-      metatest.test output, @examples
-    else
-      super
-    end
+  def metatest_checker
+    ...return a Mumukit::Metatest::Checker that implements your assertions....
   end
   
-  def metatest
-    Mumukit::Metatest::Framework.new(checker: MyChecker.new,
-                                     runner: Mumukit::Metatest::IdentityRunner.new)
+  def compile_metatest_file_content(request)
+     ...return the input to your custom command....
   end
 end
 ```
+
+The only restriction is that your `customcommand` must return a Json output. If it is not the case, please override `to_metatest_compilation(result)` to convert its output to a proper hash with symbolized keys. 
+
+Please notice that using `metatested true` is incompatible with `structured true` and `mashup` directives. 
+
+#### Add Feedback
+#### Add Mulang support
+
+#### Embedding execution
+
+
