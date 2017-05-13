@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.version       = <CONSTANT>VersionHook::VERSION
   spec.authors       = ['<AUTHOR>']
   spec.summary       = '<RUNNER> Runner for Mumuki'
-  spec.homepage      = 'http://github.com/<USER>/mumuki-<RUNNER>-server'
+  spec.homepage      = 'https://github.com/<USER>/mumuki-<RUNNER>-server'
   spec.license       = 'MIT'
 
   spec.files         = Dir['lib/**/**']
@@ -25,6 +25,3 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_development_dependency 'mumukit-bridge', '~> 1.3'
 end
-
-
-
