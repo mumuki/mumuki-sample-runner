@@ -55,50 +55,50 @@ if [ -d $project_directory ]; then
   exit 2
 fi
 
-cp template $project_directory -R
+cp -R template $project_directory
 cd $project_directory
 
 
 echo "[Mumukit::Bootstrap] Creating gemspec..."
-sed -i "s/<RUNNER>/$runner/g"                    mumuki-sample-runner.gemspec
-sed -i "s/<CONSTANT>/$constant/g"                mumuki-sample-runner.gemspec
-sed -i "s/<USER>/$user/g"                        mumuki-sample-runner.gemspec
-sed -i "s/<AUTHOR>/$author/g"                    mumuki-sample-runner.gemspec
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    mumuki-sample-runner.gemspec
+sed -i '.tmp' "s/<CONSTANT>/$constant/g"                mumuki-sample-runner.gemspec
+sed -i '.tmp' "s/<USER>/$user/g"                        mumuki-sample-runner.gemspec
+sed -i '.tmp' "s/<AUTHOR>/$author/g"                    mumuki-sample-runner.gemspec
 mv  mumuki-sample-runner.gemspec                 mumuki-$runner-runner.gemspec
 
 echo "[Mumukit::Bootstrap] Creating LICENSE..."
-sed -i "s/<YEAR>/$year/g"                        LICENSE
-sed -i "s/<AUTHOR>/$author/g"                    LICENSE
+sed -i '.tmp' "s/<YEAR>/$year/g"                        LICENSE
+sed -i '.tmp' "s/<AUTHOR>/$author/g"                    LICENSE
 
 echo "[Mumukit::Bootstrap] Creating config.ru..."
-sed -i "s/<RUNNER>/$runner/g"                    config.ru
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    config.ru
 
 echo "[Mumukit::Bootstrap] Creating README.md..."
-sed -i "s/<RUNNER>/$runner/g"                    README.md
-sed -i "s/<USER>/$user/g"                        README.md
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    README.md
+sed -i '.tmp' "s/<USER>/$user/g"                        README.md
 
 echo "[Mumukit::Bootstrap] Creating .travis.yml..."
-sed -i "s/<RUNNER>/$runner/g"                    .travis.yml
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    .travis.yml
 
 echo "[Mumukit::Bootstrap] Creating spec/spec_helper.rb..."
-sed -i "s/<RUNNER>/$runner/g"                    spec/spec_helper.rb
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    spec/spec_helper.rb
 
 echo "[Mumukit::Bootstrap] Creating lib/${runner}_runner.rb..."
-sed -i "s/<RUNNER>/$runner/g"                    lib/sample_runner.rb
+sed -i '.tmp' "s/<RUNNER>/$runner/g"                    lib/sample_runner.rb
 mv lib/sample_runner.rb                          lib/${runner}_runner.rb
 
 echo "[Mumukit::Bootstrap] Creating worker/Dockerfile..."
-sed -i "s/<AUTHOR>/$author/g"                    worker/Dockerfile
-sed -i "s,<IMAGE>,$image,g"                      worker/Dockerfile
+sed -i '.tmp' "s/<AUTHOR>/$author/g"                    worker/Dockerfile
+sed -i '.tmp' "s,<IMAGE>,$image,g"                      worker/Dockerfile
 
 echo "[Mumukit::Bootstrap] Creating lib/metadata_hook.rb..."
-sed -i "s/<CONSTANT>/$constant/g"                lib/metadata_hook.rb
+sed -i '.tmp' "s/<CONSTANT>/$constant/g"                lib/metadata_hook.rb
 
 echo "[Mumukit::Bootstrap] Creating lib/test_hook.rb..."
-sed -i "s/<CONSTANT>/$constant/g"                lib/test_hook.rb
+sed -i '.tmp' "s/<CONSTANT>/$constant/g"                lib/test_hook.rb
 
 echo "[Mumukit::Bootstrap] Creating lib/version_hook.rb..."
-sed -i "s/<CONSTANT>/$constant/g"                lib/version_hook.rb
+sed -i '.tmp' "s/<CONSTANT>/$constant/g"                lib/version_hook.rb
 
 echo "[Mumukit::Bootstrap] Running bundle install..."
 bundle install
@@ -112,5 +112,3 @@ echo "[Mumukit::Bootstrap] Done!"
 echo "                     Now go to $project_directory and start editing it."
 echo ""
 echo "                     See https://github.com/mumuki/mumukit-bootstrap/blob/master/README.md#developing for more instructions"
-
-
